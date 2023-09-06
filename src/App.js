@@ -1,41 +1,53 @@
-import "./App.css";
+import { useState } from "react";
+import { createRoot } from "react-dom/client";
+import {
+  BrowserRouter as Router,
+  createBrowserRouter,
+  RouterProvider,
+  Switch,
+  Route,
+  Routes,
+  Link,
+} from "react-router-dom";
 
+import "./App.css";
+import About from "./components/About";
+import Navbar from "./components/Navbar";
+import TextForm from "./components/TextForm";
+import Main from "./components/Main";
+import Footer from "./components/Footer";
 let name = "Aviral";
 function App() {
+  const [mode,setMode] = useState('zinc-900');
+  const toggleMode = ()=> {
+    if (mode === 'slate-200') {
+      
+      setMode('zinc-900');
+      document.body.style.backgroundColor = 'rgb(39 39 42)';
+      document.body.style.color = 'rgb(203 213 225)';
+    }
+    else{
+      setMode('slate-200');
+      document.body.style.backgroundColor = 'rgb(203 213 225)';
+      document.body.style.color = 'rgb(55 65 81)';
+    }
+  }
   return (
     <>
-      <div className="navbar bg-base-100">
-  <div className="flex-1">
-    <a className="btn btn-ghost normal-case text-xl" href="/">TextUtils</a>
-  </div>
-  <div className="flex-none">
-    <ul className="menu menu-horizontal px-1">
-      <li><a href="/">Home</a></li>
-      <li><a href="/">About</a></li>
-      <li>
-        <details>
-          <summary>
-            Parent
-          </summary>
-          <ul className="p-2 bg-base-100">
-            <li><a href="/">Link 1</a></li>
-            <li><a href="/">Link 2</a></li>
-          </ul>
-        </details>
-      </li>
-    </ul>
-  </div>
-  <div className="join">
-  <div>
-    <div>
-      <input className="input input-bordered join-item" placeholder="Search"/>
-    </div>
-  </div>
-  <div className="indicator">
-    <button className="btn join-item">Search</button>
-  </div>
-</div>
-</div>
+        <Router>
+      <Navbar title="TextUtils" mode = {mode} toggleMode={toggleMode} />
+      <div className="container">
+          <Routes>
+            <Route exact path="/about" element={<About mode={mode}/>}>
+            </Route>
+            <Route exact path="/" element={<Main mode={mode}/>}>
+            </Route>
+          </Routes>
+        
+        {/* <About/> */}
+      </div>
+        </Router>
+        <Footer/>
     </>
   );
 }
